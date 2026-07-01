@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intermediate HTML, CSS & JavaScript Project</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f4f4;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#008080;
+    color:white;
+    padding:15px 30px;
+}
+
+.nav-links{
+    display:flex;
+    gap:20px;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* Responsive Grid Layout */
+.container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+h2{
+    color:#008080;
+    margin-bottom:15px;
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    background:#008080;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#006666;
+}
+
+.error{
+    color:red;
+    font-size:14px;
+}
+
+.success{
+    color:green;
+    font-size:15px;
+    margin-top:10px;
+}
+
+/* To-Do List */
+.todo-container{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+ul{
+    list-style:none;
+}
+
+li{
+    background:#e9f7f7;
+    padding:10px;
+    margin:8px 0;
+    display:flex;
+    justify-content:space-between;
+    border-radius:5px;
+}
+
+.delete-btn{
+    background:red;
+    padding:5px 10px;
+}
+
+@media(max-width:768px){
+    .container{
+        grid-template-columns:1fr;
+    }
+
+    .navbar{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+}
+</style>
+</head>
+<body>
+
+
+<nav class="navbar">
+    <h1>HTML CSS JS Project</h1>
+    <div class="nav-links">
+        <a href="#contact">Contact Form</a>
+        <a href="#validation">Validation</a>
+        <a href="#todo">To-Do List</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="card" id="contact">
+        <h2>Contact Form</h2>
+
+        <form id="contactForm">
+
+            <label>Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+
+            <label>Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+
+            <label>Message</label>
+            <textarea id="message" rows="4" placeholder="Your message"></textarea>
+
+            <p class="error" id="errorMsg"></p>
+
+            <button type="submit">Submit</button>
+
+            <p class="success" id="successMsg"></p>
+
+        </form>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="card" id="todo">
+        <h2>Dynamic To-Do List</h2>
+
+        <div class="todo-container">
+            <input type="text" id="taskInput" placeholder="Enter task">
+            <button onclick="addTask()">Add</button>
+        </div>
+
+        <ul id="taskList"></ul>
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("contactForm").addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let message = document.getElementById("message").value.trim();
+
+    let errorMsg = document.getElementById("errorMsg");
+    let successMsg = document.getElementById("successMsg");
+
+    errorMsg.innerHTML = "";
+    successMsg.innerHTML = "";
+
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+    if(name === "" || email === "" || message === ""){
+        errorMsg.innerHTML = "All fields are required!";
+        return;
+    }
+
+    if(!email.match(emailPattern)){
+        errorMsg.innerHTML = "Please enter a valid email address!";
+        return;
+    }
+
+    successMsg.innerHTML = "Form submitted successfully!";
+    document.getElementById("contactForm").reset();
+
+});
+
+
+function addTask(){
+
+    let taskInput = document.getElementById("taskInput");
+    let taskText = taskInput.value.trim();
+
+    if(taskText === ""){
+        alert("Please enter a task");
+        return;
+    }
+
+    let li = document.createElement("li");
+
+    li.innerHTML = `
+        ${taskText}
+        <button class="delete-btn" onclick="removeTask(this)">Delete</button>
+    `;
+
+    document.getElementById("taskList").appendChild(li);
+
+    taskInput.value = "";
+}
+
+function removeTask(button){
+    button.parentElement.remove();
+}
+
+</script>
+
+</body>
+</html>
